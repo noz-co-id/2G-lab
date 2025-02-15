@@ -1,4 +1,4 @@
-Welcome to the OpenBTS  source code reloaded for 2024 supporting new UHD drivers and Ubuntu 22.04 LTS to be compiled against C++11 and C++17.
+Welcome to the OpenBTS  source code reloaded for 2024-2025 supporting new UHD drivers and Ubuntu 22.04 & 24.04 LTS to be compiled against C++11 and C++17.
 
 # What is this project?
 

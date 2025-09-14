@@ -11,11 +11,11 @@ sudo apt install -y autoconf libtool libosip2-dev libortp-dev libusb-1.0-0-dev g
 
 # Installing HD driver 4.1.0 (Ubuntu 22.04) or 4.6* (Ubuntu 24.04) & t ols from Ubuntu package manager
 ubuntu_version=$(lsb_release -rs)
-if [ "$ubuntu_version" "<" "24.04" ]; then
-    sudo apt install -y libuhd4.1.0 libzmq3-dev
-else
-    sudo apt install -y libuhd4.6.0t64 cppzmq-dev
-fi
+#if [ "$ubuntu_version" "<" "24.04" ]; then
+#    sudo apt install -y libuhd4.1.0 libzmq3-dev
+#else
+#    sudo apt install -y libuhd4.6.0t64 cppzmq-dev
+#fi
 
 sudo apt install -y libuhd-dev uhd-host
 
@@ -74,7 +74,7 @@ sudo mkdir /var/lib/OpenBTS
 sudo touch /var/lib/OpenBTS/smq.cdr
 
 # Installing OpenBTS
-#./autogen.sh
-#./configure --with-uhd
-#make -j$(nproc)
-#make install
+./autogen.sh
+./configure --with-uhd
+make -j$(nproc)
+make install

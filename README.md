@@ -24,8 +24,8 @@ This projects provides a GSM+GPRS Radio Access Network Node with Software-Define
 Clone the repository and use the pre-installation script `preinstall.sh` to clone all other projects, submodules and install dependencies:
 
 ```
-$ git clone https://github.com/PentHertz/OpenBTS.git
-$ cd OpenBTS
+$ git clone --recursive https://github.com/noz-co-id/2G-lab.git # 
+$ cd 2G-lab
 $ # Optionally, checkout 5.1.0 branch which is the stable one with `git checkout 5.1.0`
 $ ./preinstall.sh # note that for now libcoredumper will show some failures but we quickly bypass them forcing the compilation
 ```

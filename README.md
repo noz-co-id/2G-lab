@@ -81,7 +81,7 @@ git checkout fuzzing-dev
 
 Do not hesitate to send issue or pull requests in order to stabilize it.
 
-# RRLP Patch
+# RRLP NOZ-LAB Patch
 Patch :
 Pastikan file RRLPServer.cpp dan RRLPServer.h ada. Biasanya ada di folder OpenBTS/apps/ atau OpenBTS/Control/.
 edit file OpenBTS.db
@@ -92,15 +92,88 @@ INSERT OR REPLACE INTO CONFIG (KEY, VALUE) VALUES ('Control.RRLP.Server', '127.0
 INSERT OR REPLACE INTO CONFIG (KEY, VALUE) VALUES ('Control.RRLP.Timeout', '5');
 .quit
 ```
+
+Tambah Command VTY (rrlp request)  
+Edit apps/OpenBTSCLI.cpp dan tambahkan di daftar command:
+
+```
+int rrlp_request_cmd(vector<string>args) {
+    if (args.size() < 2) {
+        cout << "Usage: rrlp request <IMSI>" << endl;
+        return -1;
+    }
+    string imsi = args[1];
+    cout << "Sending RRLP request to IMSI=" << imsi << endl;
+    RRLPServer::sendRequest(imsi);
+    return 0;
+}
+
+static Command rrlpCmd("rrlp", "request <IMSI>", "Send RRLP request to UE", rrlp_request_cmd);
+```
+
+Implementasi RRLPServer (RRLPServer.cpp)  Buat file apps/RRLPServer.cpp
+```
+#include <iostream>
+#include <string>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include "RRLPServer.h"
+#include "Config.h"
+
+using namespace std;
+
+void RRLPServer::sendRequest(const string& imsi) {
+    string serverAddr = gConfig.getStr("Control.RRLP.Server");
+    size_t pos = serverAddr.find(":");
+    string ip = serverAddr.substr(0,pos);
+    int port = stoi(serverAddr.substr(pos+1));
+
+    int sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if(sock < 0) {
+        perror("socket");
+        return;
+    }
+
+    sockaddr_in servaddr{};
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_port = htons(port);
+    inet_aton(ip.c_str(), &servaddr.sin_addr);
+
+    // dummy RRLP payload (nanti bisa ASN.1)
+    unsigned char req[] = {0x30, 0x10, 0xA1, 0x0E, 0x02, 0x01, 0x01, 0x02, 0x01, 0x01};
+
+    sendto(sock, req, sizeof(req), 0, (sockaddr*)&servaddr, sizeof(servaddr));
+    cout << "RRLP request sent to " << serverAddr << " for IMSI=" << imsi << endl;
+
+    close(sock);
+}
+
+```
+
+Header apps/RRLPServer.h:
+```
+#ifndef RRLP_SERVER_H
+#define RRLP_SERVER_H
+
+#include <string>
+class RRLPServer {
+public:
+    static void sendRequest(const std::string& imsi);
+};
+#endif
+```
+
+
 Rebuild Ulang :
 ```
+configure --with-uhd
 make
 sudo ./OpenBTS
 ```
 
+
 rrlpserver.py
-
-
 ```
 import socket
 

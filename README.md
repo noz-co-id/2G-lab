@@ -81,6 +81,44 @@ git checkout fuzzing-dev
 
 Do not hesitate to send issue or pull requests in order to stabilize it.
 
+# RRLP Patch
+Patch :
+Pastikan file RRLPServer.cpp dan RRLPServer.h ada. Biasanya ada di folder OpenBTS/apps/ atau OpenBTS/Control/.
+edit file OpenBTS.db
+
+```
+INSERT OR REPLACE INTO CONFIG (KEY, VALUE) VALUES ('Control.RRLP.Enable', '1');
+INSERT OR REPLACE INTO CONFIG (KEY, VALUE) VALUES ('Control.RRLP.Server', '127.0.0.1:8888');
+INSERT OR REPLACE INTO CONFIG (KEY, VALUE) VALUES ('Control.RRLP.Timeout', '5');
+.quit
+```
+Rebuild Ulang :
+```
+make
+sudo ./OpenBTS
+```
+
+rrlpserver.py
+
+
+```
+import socket
+
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.bind(("0.0.0.0", 8888))
+print("RRLP Server listening on port 8888")
+
+while True:
+    data, addr = s.recvfrom(4096)
+    print(f"RRLP request from {addr}: {data.hex()}")
+    # kirim dummy response
+    s.sendto(b"\x01\x02\x03\x04", addr)
+```
+running rrlpserver.py
+
+<OpenBTSCli> rrlp request <IMSI>
+
 
 # Old README
 

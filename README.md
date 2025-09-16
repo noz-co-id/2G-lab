@@ -91,6 +91,14 @@ INSERT OR REPLACE INTO CONFIG (KEY, VALUE) VALUES ('Control.RRLP.Enable', '1');
 INSERT OR REPLACE INTO CONFIG (KEY, VALUE) VALUES ('Control.RRLP.Server', '127.0.0.1:8888');
 INSERT OR REPLACE INTO CONFIG (KEY, VALUE) VALUES ('Control.RRLP.Timeout', '5');
 .quit
+
+enable semua
+Control.Call.QueryRRLP.Early
+Control.Call.QueryRRLP.Late
+Control.LUR.QueryRRLP
+Control.SMS.QueryRRLP
+GSM.RRLP.ALMANAC.ASSIST.PRESENT
+
 ```
 
 Tambah Command VTY (rrlp request)  

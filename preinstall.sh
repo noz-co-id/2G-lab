@@ -74,7 +74,7 @@ sudo mkdir /var/lib/OpenBTS
 sudo touch /var/lib/OpenBTS/smq.cdr
 
 # Installing OpenBTS
-./autogen.sh
-./configure --with-uhd
-make -j$(nproc)
-make install
+#./autogen.sh
+#./configure --with-uhd
+#make -j$(nproc)
+#make install

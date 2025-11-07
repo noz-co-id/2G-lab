@@ -1,0 +1,6 @@
+timestamp,msg_type,imsi_or_tmsi,lat,lon,unc,raw_hex
+2025-10-31 20:21:35,msrPositionReq,,,,,0a64
+2025-10-31 20:40:44,msrPositionReq,,,,,0a64
+2025-10-31 20:41:41,msrPositionReq,,,,,0a64
+2025-11-03 00:24:07,msrPositionReq,,,,,0a64
+2025-11-03 00:24:46,msrPositionReq,,,,,0a64

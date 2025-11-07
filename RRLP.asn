@@ -1,0 +1,71 @@
+RRLP DEFINITIONS AUTOMATIC TAGS ::= 
+BEGIN
+
+RRLP-Message ::= CHOICE {
+    msrPositionReq        MsrPosition-Req,
+    msrPositionRsp        MsrPosition-Rsp,
+    assistanceData        AssistanceData,
+    protocolError         ProtocolError
+}
+
+-- Measurement Position Request
+MsrPosition-Req ::= SEQUENCE {
+    positionMethod        ENUMERATED {
+        eotd(0),
+        gps(1),
+        gpsOrEOTD(2)
+    },
+    measureResponseTime   INTEGER (0..255) OPTIONAL,
+    accuracy              INTEGER (0..255) OPTIONAL,
+    environment           ENUMERATED {
+        badArea(0),
+        notBadArea(1)
+    } OPTIONAL
+}
+
+-- Measurement Position Response
+MsrPosition-Rsp ::= SEQUENCE {
+    referenceFrame        INTEGER (0..42431) OPTIONAL,
+    gpsTOW                INTEGER (0..14399999) OPTIONAL,
+    positionEstimate      PositionEstimate OPTIONAL,
+    gpsMeasurementInfo    GPS-MeasureInfo OPTIONAL,
+    additionalData        OCTET STRING OPTIONAL
+}
+
+PositionEstimate ::= SEQUENCE {
+    latitudeSign          ENUMERATED { north(0), south(1) },
+    latitude              INTEGER (0..8388607),
+    longitude             INTEGER (-8388608..8388607),
+    uncertainty           INTEGER (0..255) OPTIONAL
+}
+
+GPS-MeasureInfo ::= SEQUENCE {
+    msrList               SEQUENCE (SIZE(1..16)) OF GPS-MsrElement
+}
+
+GPS-MsrElement ::= SEQUENCE {
+    satelliteID           INTEGER (0..63),
+    doppler               INTEGER (-32768..32767),
+    codePhase             INTEGER (0..1024),
+    carrierToNoise        INTEGER (0..63) OPTIONAL
+}
+
+-- Assistance Data (simplified)
+AssistanceData ::= SEQUENCE {
+    referenceTime         INTEGER (0..604799) OPTIONAL,
+    refLocation           PositionEstimate OPTIONAL,
+    gpsAssistanceData     OCTET STRING OPTIONAL
+}
+
+-- Protocol Error (simplified)
+ProtocolError ::= SEQUENCE {
+    errorCause            ENUMERATED {
+        undefined(0),
+        notEnoughSats(1),
+        notProcessed(2),
+        methodNotSupported(3)
+    },
+    additionalInfo        OCTET STRING OPTIONAL
+}
+
+END

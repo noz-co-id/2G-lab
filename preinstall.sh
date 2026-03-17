@@ -30,8 +30,8 @@ cd libcoredumper
 cd coredumper-1.2.1
 ./configure
 make -j$(nproc)
-sudo make install
-sudo ldconfig
+make install
+ldconfig
 cd  ../..
 
 # Installing subscriberRegistry
@@ -42,16 +42,16 @@ git submodule update
 ./autogen.sh
 ./configure
 make -j$(nproc)
-sudo make install
-sudo ldconfig
+make install
+ldconfig
 cd ../
 
 # Installing liba53
 git clone https://github.com/PentHertz/liba53.git
 cd liba53
 make -j$(nproc)
-sudo make install
-sudo ldconfig
+make install
+ldconfig
 cd ..
 
 # Installing smqueue
@@ -62,8 +62,8 @@ git submodule update
 ./autogen.sh
 ./configure
 make -j$(nproc)
-sudo make install
-sudo ldconfig
+make install
+ldconfig
 cd ../
 
 # Making rooms for subscriberRegistry and smqueue
